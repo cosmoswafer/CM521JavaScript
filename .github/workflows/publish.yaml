@@ -1,4 +1,4 @@
-name: Publish to gh-pages
+name: Publish to github page
 2
 3on:
 4  repository_dispatch:
