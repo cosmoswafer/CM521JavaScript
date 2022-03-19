@@ -20,15 +20,28 @@ jobs:
               with:
                   node-version: '14'
 
-            - run: npm install 
+            - name: Create public directory
+              run: mkdir ./public
+
+            - name: Build hello
+              run: npm install 
               working-directory: hello-vite
 
-            - name: Build
-              run: npx vite build --base=/CM521JavaScript/
+            - run: npx vite build --base=/CM521JavaScript/hello-vite
               working-directory: hello-vite
 
-            - run: mv dist/ ../public
+            - run: mv dist/ ../public/hello-vite
               working-directory: hello-vite
+
+            - name: Build hello
+              run: npm install 
+              working-directory: counter
+
+            - run: npx vite build --base=/CM521JavaScript/counter
+              working-directory: counter
+
+            - run: mv dist/ ../public/counter
+              working-directory: counter
 
             - name: Deploy
               uses: peaceiris/actions-gh-pages@v3
