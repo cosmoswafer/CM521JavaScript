@@ -25,7 +25,9 @@ jobs:
 
             - name: Build
               run: npx vite build --base=/CM521JavaScript/
-              run: mv dist/ ../public
+              working-directory: hello-vite
+
+            - run: mv dist/ ../public
               working-directory: hello-vite
 
             - name: Deploy
