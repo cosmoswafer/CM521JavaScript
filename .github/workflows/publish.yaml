@@ -37,6 +37,9 @@ jobs:
           mv dist/ ../public/counter
         working-directory: counter
 
+      - name: Copy index page
+        run: cp index.html ./public
+
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         if: ${{ github.ref == 'refs/heads/master' }}
