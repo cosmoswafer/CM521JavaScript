@@ -1,0 +1,24 @@
+name: Publish to gh-pages
+2
+3on:
+4  repository_dispatch:
+5  push:
+6    branches:
+7      - master
+8
+9jobs:
+10  build:
+11    runs-on: ubuntu-latest
+12    steps:
+13    - uses: actions/checkout@v2
+14    - name: Use Node.js
+15      uses: actions/setup-node@v1
+16      with:
+17        node-version: '12.x'
+18    - run: yarn
+19    - run: yarn run build
+20    - name: Deploy
+21      uses: peaceiris/actions-gh-pages@v3
+22      with:
+23        github_token: ${{ secrets.GITHUB_TOKEN }}
+24        publish_dir: ./build
