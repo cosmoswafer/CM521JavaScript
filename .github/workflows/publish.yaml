@@ -17,11 +17,11 @@ jobs:
 
             - name: Setup Node
               uses: actions/setup-node@v3
+              working-directory: hello-vite
               with:
                   node-version: '14'
-              working-directory: hello-vite
 
-            - run: npm install
+            - run: npm install 
               working-directory: hello-vite
 
             - name: Build
