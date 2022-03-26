@@ -1,48 +1,48 @@
 name: Publish to GitHub Pages
 
 on:
-  push:
-    branches:
-      - master # Set a branch name to trigger deployment
-  pull_request:
+    push:
+        branches:
+            - master # Set a branch name to trigger deployment
+    pull_request:
 
 jobs:
-  deploy:
-    runs-on: ubuntu-20.04
-    concurrency:
-      group: ${{ github.workflow }}-${{ github.ref }}
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
+    deploy:
+        runs-on: ubuntu-20.04
+        concurrency:
+            group: ${{ github.workflow }}-${{ github.ref }}
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v3
 
-      - name: Setup Node
-        uses: actions/setup-node@v3
-        with:
-          node-version: "14"
+            - name: Setup Node
+              uses: actions/setup-node@v3
+              with:
+                  node-version: '14'
 
-      - name: Create public directory
-        run: mkdir ./public
+            - name: Create public directory
+              run: mkdir ./public
 
-      - name: Build hello
-        run: |
-          npm install 
-          npx vite build --base=/CM521JavaScript/hello-vite
-          mv dist/ ../public/hello-vite
-        working-directory: hello-vite
+            - name: Build rockscissorpaper
+              run: |
+                  npm install 
+                  npm run build
+                  mv dist/ ../public/rockscissorpaper
+              working-directory: rockscissorpaper
 
-      - name: Build counter
-        run: |
-          npm install 
-          npx vite build --base=/CM521JavaScript/counter
-          mv dist/ ../public/counter
-        working-directory: counter
+            - name: Build counter
+              run: |
+                  npm install 
+                  npx vite build --base=/CM521JavaScript/counter
+                  mv dist/ ../public/counter
+              working-directory: counter
 
-      - name: Copy index page
-        run: cp index.html ./public
+            - name: Copy index page
+              run: cp index.html ./public
 
-      - name: Deploy
-        uses: peaceiris/actions-gh-pages@v3
-        if: ${{ github.ref == 'refs/heads/master' }}
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./public
+            - name: Deploy
+              uses: peaceiris/actions-gh-pages@v3
+              if: ${{ github.ref == 'refs/heads/master' }}
+              with:
+                  github_token: ${{ secrets.GITHUB_TOKEN }}
+                  publish_dir: ./public
