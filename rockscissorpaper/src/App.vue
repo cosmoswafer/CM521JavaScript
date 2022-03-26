@@ -1,11 +1,11 @@
 <template>
   <div class="app-root">
-  <img src="images/Placeholder-Bot.png">
-  <img src="images/Placeholder-You.png">
+  <img :src="botimg">
+  <img :src="youimg">
   <div class="actions">
-    <img src="images/rock-btn.png">
-    <img src="images/scissor-btn.png">
-    <img src="images/paper-btn.png">
+    <img @click="playGame('rock')" src="images/rock-btn.png">
+    <img @click="playGame('scissor')" src="images/scissor-btn.png">
+    <img @click="playGame('paper')" src="images/paper-btn.png">
     </div>
   </div>
 </template>
@@ -13,6 +13,26 @@
 <script>
 export default {
   name: 'App',
+  data() {
+    return {
+      'botaction': 'ROCK',
+      'youimg': 'images/Placeholder-You.png',
+      'botimg': 'images/Placeholder-Bot.png',
+    }
+  },
+  methods: {
+    gameResult: function(you, bot) {
+      if (you === bot) return 'draw';
+      else if ((you === 'paper' && bot === 'rock')
+      || (you === 'rock' && bot === 'scissor')
+      || (you === 'scissor' && bot === 'paper')) return 'win';
+      else return 'lose';
+    },
+    playGame: function(a) {
+      const result = 'draw';
+      this.youimg = `images/${a}-${result}.png`;
+    }
+  }
 }
 </script>
 
@@ -49,5 +69,6 @@ body {
 
 .app-root .actions img {
   max-width: 100px;
+  cursor: pointer;
 }
 </style>
