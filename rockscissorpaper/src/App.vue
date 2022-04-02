@@ -15,7 +15,7 @@ export default {
     name: 'App',
     data() {
         return {
-            botaction: 'ROCK',
+            botaction: '',
             youimg: 'images/Placeholder-You.png',
             botimg: 'images/Placeholder-Bot.png',
         };
