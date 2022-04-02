@@ -32,7 +32,8 @@ jobs:
 
             - name: Build health app
               run: |
-                  cp -av jmobile/ ../public
+                  mkdir ../public/jmobile
+                  cp -av ./index.html ../public/jmobile
               working-directory: jmobile
 
             - name: Build counter
