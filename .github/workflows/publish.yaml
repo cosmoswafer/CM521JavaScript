@@ -23,6 +23,13 @@ jobs:
             - name: Create public directory
               run: mkdir ./public
 
+            - name: Build ios timer
+              run: |
+                  npm install 
+                  npm run build
+                  mv dist/ ../public/timer
+              working-directory: timer
+
             - name: Build rockscissorpaper
               run: |
                   npm install 
