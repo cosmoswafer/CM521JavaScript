@@ -30,6 +30,11 @@ jobs:
                   mv dist/ ../public/rockscissorpaper
               working-directory: rockscissorpaper
 
+            - name: Build health app
+              run: |
+                  cp jmobile/ ./public
+              working-directory: jmobile
+
             - name: Build counter
               run: |
                   npm install 

@@ -18,6 +18,8 @@ export default {
             botaction: '',
             youimg: 'images/Placeholder-You.png',
             botimg: 'images/Placeholder-Bot.png',
+            botscore: 0,
+            youscore: 0,
         };
     },
     methods: {
@@ -45,6 +47,7 @@ export default {
         resetGame: function () {
             this.youimg = 'images/Placeholder-You.png';
             this.botimg = 'images/Placeholder-Bot.png';
+            this.botscore = this.youscore = 0;
         },
     },
 };
