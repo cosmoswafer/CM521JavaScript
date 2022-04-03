@@ -1,7 +1,7 @@
 <template>
     <div id="app">
         <div id="stopwatch">
-            {{ time_value }}
+            {{ timer_text }}
         </div>
         <div id="stopwatch-controls">
             <button @click="stopTimer" id="reset-and-lap">Reset</button>
@@ -21,10 +21,22 @@ export default {
     name: 'iOS Timer App',
     data() {
         return {
-            time_value: '00:00.00',
+            time_value: 0,
             run_timer: false,
             begin_time: 0,
         };
+    },
+    computed: {
+        timer_text() {
+            const ts = this.time_value;
+            const ms10 = Math.floor((ts % 1000) / 10);
+            const seconds = Math.floor(ts / 1000) % 60;
+            const minutes = Math.floor(ts / 1000 / 60);
+
+            return `${String(minutes).padStart(2, '0')}:${String(
+                seconds
+            ).padStart(2, '0')}.${String(ms10).padStart(2, '0')}`;
+        }
     },
     methods: {
         ts2Timer: function (ts) {
@@ -37,12 +49,11 @@ export default {
             ).padStart(2, '0')}.${String(ms10).padStart(2, '0')}`;
         },
         timerRafInit: function (ts) {
-            this.begin_time = ts;
+            this.begin_time = ts - this.time_value;
             requestAnimationFrame(this.timerRaf);
         },
         timerRaf: function (ts) {
-            console.log({ ts });
-            this.time_value = this.ts2Timer(Math.floor(ts - this.begin_time));
+            this.time_value = (ts - this.begin_time)
             if (this.run_timer) requestAnimationFrame(this.timerRaf);
         },
         startTimer: function () {
@@ -51,6 +62,9 @@ export default {
         },
         stopTimer: function () {
             this.run_timer = false;
+        },
+        resetTimer: function () {
+            this.time_value = 0;
         },
     },
 };
