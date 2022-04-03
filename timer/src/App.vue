@@ -4,14 +4,25 @@
             {{ timer_text }}
         </div>
         <div id="stopwatch-controls">
-            <button @click="stopTimer" id="reset-and-lap">Reset</button>
-            <button @click="startTimer" id="start-and-stop">Start</button>
+            <button
+                @click="run_timer ? addLap() : resetTimer()"
+                id="reset-and-lap"
+            >
+                {{ run_timer ? 'Lap' : 'Reset' }}
+            </button>
+            <button
+                @click="run_timer ? stopTimer() : startTimer()"
+                id="start-and-stop"
+                :class="{ red: run_timer }"
+            >
+                {{ run_timer ? 'Stop' : 'Start' }}
+            </button>
             <span id="brand">Stopwatch</span>
         </div>
         <ul id="stopwatch-records">
-            <li>
-                <span>Lap 1</span>
-                <span>00:01.23</span>
+            <li v-for="(v, i) in laps" :key="i">
+                <span>Lap {{i+1}}</span>
+                <span>{{v}}</span>
             </li>
         </ul>
     </div>
@@ -24,6 +35,7 @@ export default {
             time_value: 0,
             run_timer: false,
             begin_time: 0,
+            laps: [],
         };
     },
     computed: {
@@ -36,7 +48,7 @@ export default {
             return `${String(minutes).padStart(2, '0')}:${String(
                 seconds
             ).padStart(2, '0')}.${String(ms10).padStart(2, '0')}`;
-        }
+        },
     },
     methods: {
         ts2Timer: function (ts) {
@@ -53,7 +65,7 @@ export default {
             requestAnimationFrame(this.timerRaf);
         },
         timerRaf: function (ts) {
-            this.time_value = (ts - this.begin_time)
+            this.time_value = ts - this.begin_time;
             if (this.run_timer) requestAnimationFrame(this.timerRaf);
         },
         startTimer: function () {
@@ -65,6 +77,10 @@ export default {
         },
         resetTimer: function () {
             this.time_value = 0;
+            this.laps = [];
+        },
+        addLap: function () {
+            this.laps.push(this.timer_text);
         },
     },
 };
