@@ -142,7 +142,6 @@ body {
 }
 
 #stopwatch-controls button {
-    border: none;
     border-radius: 50%;
     cursor: pointer;
     font-size: 1.5rem;
@@ -152,6 +151,7 @@ body {
     color: var(--font-colour);
     box-shadow: 0px 0px 0px 3px var(--background-colour);
     border: 3px solid black;
+    text-align: center;
     /*outline: 3px solid var(--background-colour);
     outline-offset: 3px;*/
 }
