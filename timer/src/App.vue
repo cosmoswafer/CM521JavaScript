@@ -23,9 +23,16 @@
             <li v-if="run_timer">
                 <span>Lap</span><span>{{ lap_text }}</span>
             </li>
-            <li v-for="(v, i) in laps" :key="i">
+            <li
+                v-for="(v, i) in laps"
+                :key="i"
+                :class="{
+                    red: v.time === this.lap_hi,
+                    green: v.time === this.lap_low,
+                }"
+            >
                 <span>Lap {{ i + 1 }}</span>
-                <span>{{ v }}</span>
+                <span>{{ v.text }}</span>
             </li>
         </ul>
     </div>
@@ -40,6 +47,8 @@ export default {
             run_timer: false,
             begin_time: 0,
             lap_begin: 0,
+            lap_hi: 0,
+            lap_low: 999999999,
             laps: [],
         };
     },
@@ -81,11 +90,18 @@ export default {
         resetTimer: function () {
             this.time_value = 0;
             this.laps = [];
+            this.lap_hi = 0;
+            this.lap_low = 999999999;
         },
         addLap: function () {
             const lap_time_now = this.lap_time;
             this.lap_begin += this.lap_time; //ts = lap_time + lap_begin
-            this.laps.push(this.ts2Timer(lap_time_now));
+            if (lap_time_now > this.lap_hi) this.lap_hi = lap_time_now;
+            if (lap_time_now < this.lap_low) this.lap_low = lap_time_now;
+            this.laps.push({
+                text: this.ts2Timer(lap_time_now),
+                time: lap_time_now,
+            });
         },
     },
 };
@@ -176,11 +192,11 @@ body {
     text-align: right;
 }
 
-#stopwatch-records li.green {
-    color: #2ed158;
-}
-
 #stopwatch-records li.red {
     color: #ff453a;
+}
+
+#stopwatch-records li.green {
+    color: #2ed158;
 }
 </style>
