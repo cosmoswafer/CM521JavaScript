@@ -20,8 +20,9 @@
             </button>
         </div>
         <ul id="stopwatch-records">
-            <li v-if="run_timer">
-                <span>Lap</span><span>{{ lap_text }}</span>
+            <li v-if="lap_time">
+                <span>Lap {{ laps.length + 1 }}</span
+                ><span>{{ lap_text }}</span>
             </li>
             <li
                 v-for="(v, i) in laps"
@@ -31,7 +32,7 @@
                     green: v.time === this.lap_low,
                 }"
             >
-                <span>Lap {{ i + 1 }}</span>
+                <span>Lap {{ laps.length - i }}</span>
                 <span>{{ v.text }}</span>
             </li>
         </ul>
@@ -72,7 +73,7 @@ export default {
         },
         timerRafInit: function (ts) {
             this.begin_time = ts - this.time_value;
-            this.lap_begin = ts;
+            this.lap_begin = ts - this.lap_time;
             requestAnimationFrame(this.timerRaf);
         },
         timerRaf: function (ts) {
@@ -90,6 +91,7 @@ export default {
         resetTimer: function () {
             this.time_value = 0;
             this.laps = [];
+            this.lap_time = 0;
             this.lap_hi = 0;
             this.lap_low = 999999999;
         },
@@ -98,7 +100,7 @@ export default {
             this.lap_begin += this.lap_time; //current timestamp ts = lap_time + lap_begin
             if (lap_time_now > this.lap_hi) this.lap_hi = lap_time_now;
             if (lap_time_now < this.lap_low) this.lap_low = lap_time_now;
-            this.laps.push({
+            this.laps.unshift({
                 text: this.ts2Timer(lap_time_now),
                 time: lap_time_now,
             });
