@@ -95,7 +95,7 @@ export default {
         },
         addLap: function () {
             const lap_time_now = this.lap_time;
-            this.lap_begin += this.lap_time; //ts = lap_time + lap_begin
+            this.lap_begin += this.lap_time; //current timestamp ts = lap_time + lap_begin
             if (lap_time_now > this.lap_hi) this.lap_hi = lap_time_now;
             if (lap_time_now < this.lap_low) this.lap_low = lap_time_now;
             this.laps.push({
