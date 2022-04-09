@@ -113,7 +113,7 @@ export default {
 }
 
 body {
-    font-family: monospace;
+    font-family: 'Avenir', Helvetica, Arial, sans-serif;
     margin: 0;
     padding: 0;
 }
@@ -128,7 +128,7 @@ body {
 }
 
 #stopwatch {
-    font-size: 7rem;
+    font-size: 5rem;
     padding: 2em 0;
     text-align: center;
 }
@@ -145,13 +145,15 @@ body {
     border: none;
     border-radius: 50%;
     cursor: pointer;
-    font-size: 2.5rem;
+    font-size: 1.5rem;
     height: 3.5em;
     width: 3.5em;
     background: var(--background-colour);
     color: var(--font-colour);
-    outline: 3px solid var(--background-colour);
-    outline-offset: 3px;
+    box-shadow: 0px 0px 0px 3px var(--background-colour);
+    border: 3px solid black;
+    /*outline: 3px solid var(--background-colour);
+    outline-offset: 3px;*/
 }
 
 #reset-and-lap {
@@ -177,7 +179,7 @@ body {
 #stopwatch-records li {
     border-bottom: 2px solid var(--seplin-colour);
     display: grid;
-    font-size: 2rem;
+    font-size: 1.5rem;
     grid-template-columns: 4fr 6fr;
     line-height: 2rem;
     padding: 1rem 2rem;
