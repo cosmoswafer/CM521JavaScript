@@ -108,6 +108,8 @@ export default {
 </script>
 
 <style>
+@import url('https://unpkg.com/normalize.css@8.0.1/normalize.css');
+
 :root {
     --seplin-colour: #323234;
 }
@@ -151,7 +153,6 @@ body {
     color: var(--font-colour);
     box-shadow: 0px 0px 0px 3px var(--background-colour);
     border: 3px solid black;
-    text-align: center;
     /*outline: 3px solid var(--background-colour);
     outline-offset: 3px;*/
 }
