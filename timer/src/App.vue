@@ -153,6 +153,7 @@ body {
     color: var(--font-colour);
     box-shadow: 0px 0px 0px 3px var(--background-colour);
     border: 3px solid black;
+    padding: 0;
     /*outline: 3px solid var(--background-colour);
     outline-offset: 3px;*/
 }
