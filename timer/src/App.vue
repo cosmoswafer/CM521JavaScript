@@ -133,7 +133,7 @@ body {
 
 #stopwatch {
     font-size: 5rem;
-    padding: 2em 0;
+    padding: 1.5em 0;
     text-align: center;
 }
 
