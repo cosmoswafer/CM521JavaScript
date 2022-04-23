@@ -23,6 +23,13 @@ jobs:
             - name: Create public directory
               run: mkdir ./public
 
+            - name: Build first react app
+              run: |
+                  npm install 
+                  npm run build
+                  mv dist/ ../public/react-counter
+              working-directory: first-react-app
+
             - name: Build ios timer
               run: |
                   npm install 
