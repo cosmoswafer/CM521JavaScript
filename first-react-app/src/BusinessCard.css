@@ -1,0 +1,26 @@
+.bussiness-card {
+    border: 2px solid gray;
+    padding: 2em 7em 2em 2em;
+    width: fit-content;
+}
+
+.bussiness-card > h1 {
+    color: gray;
+    font-size: 3rem;
+    text-align: left;
+    margin: 0;
+    margin-bottom: 0.5em;
+}
+
+.bussiness-card > h2 {
+    color: darkblue;
+    font-style: italic;
+    margin: 0;
+    margin-bottom: 0.5em;
+}
+.bussiness-card > h3 {
+    color: gray;
+    font-weight: normal;
+    margin: 0;
+    margin-bottom: 0.2em;
+}

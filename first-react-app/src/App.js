@@ -1,5 +1,6 @@
 import React from 'react';
 import './App.css';
+import BusinessCard from './BusinessCard';
 
 class App extends React.Component {
     state = {
@@ -42,6 +43,15 @@ class App extends React.Component {
                     +
                 </button>
                 <h1>{this.state.count}</h1>
+
+                <div className="blocks">
+                    <BusinessCard
+                        name="Jimmy NGAI"
+                        title="Software Engineer"
+                        department="Information Technology Team"
+                        phone="4567 9812"
+                    />
+                </div>
             </div>
         );
     }
