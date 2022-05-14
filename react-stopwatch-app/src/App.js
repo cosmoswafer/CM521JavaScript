@@ -15,15 +15,6 @@ class App extends Component {
         lap_text: '00:00.00',
     };
 
-    /*
-    get timer_text() {
-        return this.ts2Timer(this.time_value);
-    }
-    get lap_text() {
-        return this.ts2Timer(this.lap_time);
-    }
-    */
-
     ts2Timer(ts) {
         const ms10 = Math.floor((ts % 1000) / 10);
         const seconds = Math.floor(ts / 1000) % 60;
@@ -64,19 +55,29 @@ class App extends Component {
             lap_time: 0,
             laps: [],
             lap_hi: 0,
-            laplow: 999999999,
+            lap_low: 999999999,
             timer_text: this.ts2Timer(0),
             lap_text: this.ts2Timer(0),
         });
     };
     addLap = () => {
-        const lap_time_now = this.lap_time;
-        this.lap_begin += this.lap_time; //current timestamp ts = lap_time + lap_begin
-        if (lap_time_now > this.lap_hi) this.lap_hi = lap_time_now;
-        if (lap_time_now < this.lap_low) this.lap_low = lap_time_now;
-        this.laps.unshift({
+        const lap_time_now = this.state.lap_time;
+        const new_laps = [...this.state.laps];
+        new_laps.unshift({
             text: this.ts2Timer(lap_time_now),
             time: lap_time_now,
+        });
+        this.setState({
+            lap_begin: this.state.lap_begin + this.state.lap_time, //current timestamp ts = lap_time + lap_begin
+            laps: new_laps,
+            lap_hi:
+                lap_time_now > this.state.lap_hi
+                    ? lap_time_now
+                    : this.state.lap_hi,
+            lap_low:
+                lap_time_now < this.state.lap_low
+                    ? lap_time_now
+                    : this.state.lap_low,
         });
     };
 
@@ -103,7 +104,7 @@ class App extends Component {
                                 : this.startTimer()
                         }
                         id="start-and-stop"
-                        //:class="{ red: run_timer }"
+                        className={this.state.run_timer ? 'red' : ''}
                     >
                         {this.state.run_timer ? 'Stop' : 'Start'}
                     </button>
@@ -119,9 +120,11 @@ class App extends Component {
                         return (
                             <li
                                 key={i}
-                                /* :class="{
-                    red: v.time === this.lap_hi,
-                    green: v.time === this.lap_low, */
+                                className={`${
+                                    v.time === this.state.lap_hi ? 'red' : ''
+                                } ${
+                                    v.time === this.state.lap_low ? 'green' : ''
+                                }`}
                             >
                                 <span>Lap {this.state.laps.length - i}</span>
                                 <span>{v.text}</span>
