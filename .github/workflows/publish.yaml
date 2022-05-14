@@ -23,6 +23,13 @@ jobs:
             - name: Create public directory
               run: mkdir ./public
 
+            - name: Build react stopwatch app
+              run: |
+                  npm install 
+                  npm run build
+                  mv build/ ../public/react-stopwatch
+              working-directory: react-stopwatch-app
+
             - name: Build react quiz app
               run: |
                   npm install 
