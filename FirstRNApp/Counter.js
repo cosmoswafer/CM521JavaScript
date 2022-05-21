@@ -10,22 +10,16 @@ import React, {useState} from 'react';
 //import type {Node} from 'react';
 import {
   SafeAreaView,
-  ScrollView,
   StatusBar,
   StyleSheet,
   Text,
   useColorScheme,
   Button,
   View,
+  TouchableOpacity,
 } from 'react-native';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+import {Colors} from 'react-native/Libraries/NewAppScreen';
 
 const Section = ({children, title}): Node => {
   const isDarkMode = useColorScheme() === 'dark';
@@ -61,10 +55,18 @@ const App = () => {
     <>
       <StatusBar barStyle="dark-content" />
       <SafeAreaView style={styles.container}>
-        <Text>{count}</Text>
-        <View style={styles.buttonContainer}>
-          <Button title="+ 1" onPress={() => setCount(count + 1)} />
-          <Button title="- 1" onPress={() => setCount(count - 1)} />
+        <Text style={styles.number}>{count}</Text>
+        <View style={styles.buttons}>
+          <TouchableOpacity
+            style={styles.buttonContainer}
+            onPress={() => setCount(count - 1)}>
+            <Text style={styles.buttonText}>- 1</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.buttonContainer}
+            onPress={() => setCount(count + 1)}>
+            <Text style={styles.buttonText}>+ 1</Text>
+          </TouchableOpacity>
         </View>
       </SafeAreaView>
     </>
@@ -72,31 +74,26 @@ const App = () => {
 };
 
 const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
   container: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
+  number: {
+    fontSize: 80,
+    textAlign: 'center',
+  },
+  buttons: {
+    display: 'flex',
+    flexDirection: 'row',
+  },
   buttonContainer: {
     flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
+  },
+  buttonText: {
+    textAlign: 'center',
+    color: '#0083FF',
+    fontSize: 30,
   },
 });
 
