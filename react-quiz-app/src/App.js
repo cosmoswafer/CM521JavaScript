@@ -16,7 +16,7 @@ class App extends Component {
         setTimeout(
             () =>
                 this.setState({
-                    corrects: this.correct + correctness ? 0 : 1,
+                    corrects: this.state.corrects + (correctness ? 1 : 0),
                     currentIndex: this.state.currentIndex + 1,
                     statusBarWidth:
                         ((this.state.currentIndex + 1) /
