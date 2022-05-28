@@ -14,6 +14,7 @@ import {
   StatusBar,
   StyleSheet,
   Text,
+  StatusBar,
   useColorScheme,
   Button,
   View,
@@ -158,11 +159,9 @@ class App extends Component {
 }
 
 const styles = StyleSheet.create({
-  topicsContainer: {
-    padding: '32px',
-  },
   topicsTitle: {
-    fontSize: '32px',
+    fontSize: 32,
+    padding: 32,
   },
 });
 
