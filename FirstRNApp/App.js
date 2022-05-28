@@ -17,6 +17,7 @@ import {
   StyleSheet,
   Animated,
   Dimensions,
+  Vibration,
 } from 'react-native';
 const Sound = require('react-native-sound');
 
@@ -117,13 +118,14 @@ class App extends Component {
     Animated.timing(this.state.statusBarWidth, {
       toValue: ((this.state.currentIndex + 1) / this.state.topics.length) * 100,
       duration: 500,
+      useNativeDriver: false,
     }).start();
   }
 
   playSound(correctness) {
     correctness
       ? this.state.sounds.correct.play()
-      : this.state.sounds.incorrect.play();
+      : (this.state.sounds.incorrect.play(), Vibration.vibrate(500));
   }
 
   nextQuestion(correctness) {
