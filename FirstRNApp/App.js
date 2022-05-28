@@ -18,6 +18,7 @@ import {
   Animated,
   Dimensions,
 } from 'react-native';
+const Sound = require('react-native-sound');
 
 class App extends Component {
   state = {
@@ -70,7 +71,31 @@ class App extends Component {
         ],
       },
     ],
+    sounds: {correct: null, incorrect: null},
   };
+
+  componentDidMount() {
+    let correct = new Sound('correct.mp3', Sound.MAIN_BUNDLE, error => {
+      if (error) {
+        console.log('failed to load the sound', error);
+        return;
+      }
+    });
+
+    let incorrect = new Sound('incorrect.mp3', Sound.MAIN_BUNDLE, error => {
+      if (error) {
+        console.log('failed to load the sound', error);
+        return;
+      }
+    });
+
+    this.setState({
+      sounds: {
+        correct: correct,
+        incorrect: incorrect,
+      },
+    });
+  }
 
   showAnswer(idx, correctness) {
     const newBtnClass = ['', '', '', ''];
@@ -88,22 +113,25 @@ class App extends Component {
     );
   }
 
-  nextQuestion(correctness) {
+  drawAnimation() {
     Animated.timing(this.state.statusBarWidth, {
       toValue: ((this.state.currentIndex + 1) / this.state.topics.length) * 100,
       duration: 500,
     }).start();
+  }
 
+  playSound(correctness) {
+    correctness
+      ? this.state.sounds.correct.play()
+      : this.state.sounds.incorrect.play();
+  }
+
+  nextQuestion(correctness) {
     setTimeout(
       () =>
         this.setState({
           corrects: this.state.corrects + (correctness ? 1 : 0),
           currentIndex: this.state.currentIndex + 1,
-          /*
-          statusBarWidth:
-            ((this.state.currentIndex + 1) / this.state.topics.length) * 100 +
-            '%',
-            */
           buttonClass: ['', '', '', ''],
           buttonBackgroundColour: ['', '', '', ''],
         }),
@@ -113,6 +141,8 @@ class App extends Component {
 
   checkAnswer = (ansId, correctness) => {
     this.showAnswer(ansId, correctness);
+    this.drawAnimation();
+    this.playSound(correctness);
     this.nextQuestion(correctness);
   };
 
