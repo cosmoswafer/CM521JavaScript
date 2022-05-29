@@ -109,16 +109,13 @@ class App extends Component {
   isMatched(cardId1, cardId2) {
     const card1 = this.state.cards[cardId1];
     const card2 = this.state.cards[cardId2];
-    console.log(card1, card2, 'checking matched');
     return card1.number == card2.number;
   }
 
   open2ndCard(currentCard) {
     if (!this.isMatched(this.lastOpenedCard, currentCard)) {
-      console.log('Not matched');
       this.closeCards(this.lastOpenedCard, currentCard);
     } else {
-      console.log('Matched!');
       this.matchedCard += 2;
     }
     this.lastOpenedCard = -1;
