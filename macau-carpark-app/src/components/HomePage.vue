@@ -1,5 +1,5 @@
 <template>
-  <f7-page>
+  <f7-page ptr @ptr:refresh="refresh">
     <f7-navbar title="Macau Carpark Info"></f7-navbar>
     <f7-block-title>Car Park List</f7-block-title>
     <f7-list>
@@ -31,6 +31,15 @@ export default {
   mounted() {
     f7ready((f7) => {
       console.log({ f7 });
+      this.fetchCarparks();
+    });
+  },
+  methods: {
+    refresh: function (done) {
+      this.fetchCarparks();
+      setTimeout(() => done(), 500);
+    },
+    fetchCarparks: function () {
       fetch(
         //`https://ios-dev.shortcutsapi.com/parking-info/parking-info-macau-ios-dev`
         `/parking-info-macau-ios-dev.json`
@@ -46,16 +55,6 @@ export default {
           // eslint-disable-next-line no-console
           console.log(err);
         });
-    });
-  },
-  methods: {
-    listCarpark: function (carparks) {
-      const newCarparks = new Array();
-      for (let c of carparks) {
-        console.log("Pushing carpark", c.name);
-        newCarparks.push(c.name);
-      }
-      this.carparks = newCarparks;
     },
   },
 };
