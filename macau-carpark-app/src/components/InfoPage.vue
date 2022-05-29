@@ -1,49 +1,96 @@
 <template>
-  <f7-page @page:init="onPageInit">
-    <f7-navbar title="Info Page" back-link="返回"></f7-navbar>
-    <f7-block>
-      <div class="data-table card">
-        <table>
-          <thead>
-            <tr>
-              <th class="label-cell">Carpark</th>
-              <th class="numeric-cell">Details</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td class="label-cell">Name</td>
-              <td class="numeric-cell">{{ this.carpark.name }}</td>
-            </tr>
-            <tr>
-              <td class="label-cell">Address</td>
-              <td class="numeric-cell">{{ this.carpark.address }}</td>
-            </tr>
-            <tr>
-              <td class="label-cell">🚙</td>
-              <td class="numeric-cell">{{ this.carpark.car }}</td>
-            </tr>
-            <tr>
-              <td class="label-cell">🛵</td>
-              <td class="numeric-cell">{{ this.carpark.motor }}</td>
-            </tr>
-          </tbody>
-        </table>
+  <f7-page @page:init="onPageInit" name="info">
+    <f7-navbar :title="this.carpark?.name" back-link="返回"></f7-navbar>
+    <div class="info-container" v-if="this.carpark?.name">
+      <div class="upper">
+        <div class="numbers">
+          <div class="section">
+            <span>{{ this.carpark.car }}</span>
+            <h4>私家車位</h4>
+          </div>
+          <div class="section">
+            <span>{{ this.carpark.motor }}</span>
+            <h4>電單車位</h4>
+          </div>
+        </div>
+        <div class="address">{{ this.carpark.address }}</div>
       </div>
-    </f7-block>
+      <div class="lower">
+        <img
+          :src="`https://maps.googleapis.com/maps/api/staticmap?center=${carpark.coordinates.lat},${carpark.coordinates.lng}&zoom=17&size=375x320&maptype=roadmap&markers=color:red|${carpark.coordinates.lat},${carpark.coordinates.lng}&key=AIzaSyDCxVlChY61Oohz7UooDcoc5YKxLwqaJHY`"
+        />
+      </div>
+    </div>
   </f7-page>
 </template>
 
 <script>
 export default {
   props: {
+    f7router: Object,
     carpark: Object,
   },
   methods: {
     onPageInit() {
-      // eslint-disable-next-line no-console
-      console.log(this.carpark);
+      if (this.carpark == null) {
+        this.f7router.navigate("/", { reloadAll: true });
+        return;
+      }
     },
   },
 };
 </script>
+
+<style scoped>
+.info-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.info-container .upper,
+.info-container .lower {
+  flex: 0px 1 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.numbers {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+
+.numbers .section {
+  display: flex;
+  flex: 0px 1 1;
+  flex-direction: column;
+  text-align: center;
+}
+
+.numbers .section span {
+  display: block;
+  font-size: 4em;
+}
+
+.numbers .section h4 {
+  font-size: 1.3em;
+  margin: 1em 0;
+}
+
+.address {
+  text-align: center;
+  padding: 0 2em;
+  font-size: 1.2em;
+  margin-top: 1.8em;
+}
+
+.lower img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+</style>
+
