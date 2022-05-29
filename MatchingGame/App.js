@@ -32,13 +32,14 @@ class App extends Component {
     '🥰',
   ];
   boardSize = 16;
+  lastOpenedCard = -1;
+  matchedCard = 0;
 
   state = {
     tries: 0,
     endGame: false,
     cards: [],
-    firstOpenedCard: -1,
-    secondOpenedCard: -1,
+    lastOpenedCard: -1,
   };
 
   shuffle(array) {
@@ -88,15 +89,55 @@ class App extends Component {
     this.resetGame();
   }
 
-  flipCard(i) {
+  flipCard(...cards) {
     const newCards = [...this.state.cards];
-    const currentCard = newCards[i];
-    currentCard.isOpen = !currentCard.isOpen;
-    return newCards;
+    for (let c of cards) {
+      const currentCard = newCards[c];
+      currentCard.isOpen = !currentCard.isOpen;
+    }
+    this.setState({tries: this.state.tries + 1, cards: newCards});
+  }
+
+  open1stCard(index) {
+    this.lastOpenedCard = index;
+  }
+
+  closeCards(card1, card2) {
+    setTimeout(() => this.flipCard(card1, card2), 1000);
+  }
+
+  isMatched(cardId1, cardId2) {
+    const card1 = this.state.cards[cardId1];
+    const card2 = this.state.cards[cardId2];
+    console.log(card1, card2, 'checking matched');
+    return card1.number == card2.number;
+  }
+
+  open2ndCard(currentCard) {
+    if (!this.isMatched(this.lastOpenedCard, currentCard)) {
+      console.log('Not matched');
+      this.closeCards(this.lastOpenedCard, currentCard);
+    } else {
+      console.log('Matched!');
+      this.matchedCard += 2;
+    }
+    this.lastOpenedCard = -1;
   }
 
   openCard = index => {
-    this.setState({tries: this.state.tries + 1, cards: this.flipCard(index)});
+    const currentCard = this.state.cards[index];
+    if (currentCard.isOpen) {
+      return;
+    }
+
+    this.lastOpenedCard == -1
+      ? this.open1stCard(index)
+      : this.open2ndCard(index);
+    this.flipCard([index]);
+
+    if (this.matchedCard >= this.boardSize) {
+      this.endGame();
+    }
   };
 
   endGame = () => {
@@ -137,24 +178,24 @@ class App extends Component {
               })}
             </View>
           </View>
-          <View style={styles.footer}>
-            {this.state.endGame ? (
-              <View>
-                <Text style={styles.footerText}>
-                  End Game in {this.state.tries} steps!
-                </Text>
-                <TouchableOpacity onPress={this.resetGame}>
-                  <Text>Again</Text>
-                </TouchableOpacity>
-              </View>
-            ) : (
-              <View>
-                <Text style={styles.footerText}>
-                  You have tried {this.state.tries} time(s).
-                </Text>
-              </View>
-            )}
-          </View>
+          {this.state.endGame ? (
+            <View style={styles.footer}>
+              <Text style={styles.footerText}>
+                End Game in {this.state.tries} steps!
+              </Text>
+              <TouchableOpacity
+                style={styles.footerButton}
+                onPress={this.resetGame}>
+                <Text>Play Again</Text>
+              </TouchableOpacity>
+            </View>
+          ) : (
+            <View style={styles.footer}>
+              <Text style={styles.footerText}>
+                You have tried {this.state.tries} time(s).
+              </Text>
+            </View>
+          )}
         </SafeAreaView>
       </>
     );
@@ -167,7 +208,6 @@ const styles = StyleSheet.create({
   },
   header: {
     flex: 1,
-    //backgroundColor: '#eee',
   },
   headerText: {
     fontSize: 32,
@@ -176,7 +216,6 @@ const styles = StyleSheet.create({
   },
   main: {
     flex: 3,
-    //backgroundColor: 'yellow',
   },
   gameBoard: {
     flex: 1,
@@ -199,13 +238,20 @@ const styles = StyleSheet.create({
   buttonText: {
     fontSize: 30,
   },
+  footerButton: {
+    marginTop: 16,
+    backgroundColor: '#ccc',
+    borderRadius: 8,
+    fontSize: 16,
+    padding: 8,
+  },
   footer: {
     flex: 1,
-    //backgroundColor: '#eee',
+    alignItems: 'center',
+    alignContent: 'center',
   },
   footerText: {
     paddingTop: 32,
-    textAlign: 'center',
   },
 });
 

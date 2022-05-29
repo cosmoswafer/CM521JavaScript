@@ -106,11 +106,13 @@ class App extends Component {
     newBtnBkgColour[idx] = correctness
       ? {backgroundColor: '#4FFF87'}
       : {backgroundColor: '#FF7056'};
-    setTimeout(() =>
-      this.setState({
-        buttonClass: newBtnClass,
-        buttonBackgroundColour: newBtnBkgColour,
-      }),
+    setTimeout(
+      () =>
+        this.setState({
+          buttonClass: newBtnClass,
+          buttonBackgroundColour: newBtnBkgColour,
+        }),
+      1000,
     );
   }
 
