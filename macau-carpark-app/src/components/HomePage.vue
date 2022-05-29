@@ -1,6 +1,12 @@
 <template>
   <f7-page ptr @ptr:refresh="refresh">
-    <f7-navbar title="Macau Carpark Info"></f7-navbar>
+    <f7-navbar>
+      <f7-nav-title>Macau Carpark Info</f7-nav-title>
+      <f7-nav-right>
+        <f7-link @click="locateUser" v-if="!isLocating">定位</f7-link>
+      </f7-nav-right></f7-navbar
+    >
+
     <f7-block-title>Car Park List</f7-block-title>
     <f7-list>
       <f7-list-item
@@ -26,7 +32,24 @@ export default {
   data() {
     return {
       carparks: [],
+      location: {
+        lat: null,
+        lng: null,
+      },
+      isLocating: false,
     };
+  },
+  computed: {
+    locationCombined() {
+      return this.location.lat && this.location.lng;
+    },
+  },
+  watch: {
+    locationCombined() {
+      // eslint-disable-next-line no-console
+      console.log(`location is being updated`);
+      this.fetchCarparks();
+    },
   },
   mounted() {
     f7ready((f7) => {
@@ -40,10 +63,13 @@ export default {
       setTimeout(() => done(), 500);
     },
     fetchCarparks: function () {
-      fetch(
-        //`https://ios-dev.shortcutsapi.com/parking-info/parking-info-macau-ios-dev`
-        `/parking-info-macau-ios-dev.json`
-      )
+      let url = `https://ios-dev.shortcutsapi.com/parking-info/parking-info-macau-ios-dev`;
+
+      if (this.location.lat != null && this.location.lng != null) {
+        url += `?lat=${this.location.lat}&lng=${this.location.lng}`;
+      }
+
+      fetch(url)
         .then((res) => {
           res.json().then((json) => {
             // eslint-disable-next-line no-console
@@ -55,6 +81,19 @@ export default {
           // eslint-disable-next-line no-console
           console.log(err);
         });
+    },
+    locateUser: function () {
+      this.isLocating = true;
+      navigator.geolocation.getCurrentPosition((location) => {
+        // eslint-disable-next-line no-console
+
+        this.location = {
+          lat: location.coords.latitude,
+          lng: location.coords.longitude,
+        };
+        this.isLocating = false;
+        console.log(this.location);
+      });
     },
   },
 };
